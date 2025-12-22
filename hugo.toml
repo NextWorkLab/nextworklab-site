@@ -1,0 +1,34 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'NextWork Lab.'
+[params]
+  description = "제품 소개 및 사용설명서"
+[frontmatter]
+  format = "yaml"
+
+
+[menu]
+  [[menu.main]]
+    name = "Brands"
+    url = "/brands/"
+    weight = 10
+
+  [[menu.main]]
+    name = "Use Cases"
+    url = "/use-cases/"
+    weight = 20
+
+  [[menu.main]]
+    name = "Manual"
+    url = "/manual/"
+    weight = 30
+
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 40
+
+  [[menu.main]]
+    name = "Contact"
+    url = "/contact/"
+    weight = 50
