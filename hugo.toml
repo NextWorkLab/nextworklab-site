@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://nextworklab.co.kr/'
 languageCode = 'en-us'
 title = 'NextWork Lab.'
 [params]
@@ -9,26 +9,21 @@ title = 'NextWork Lab.'
 
 [menu]
   [[menu.main]]
-    name = "Brands"
-    url = "/brands/"
+    name = "About"
+    url = "/about/"
     weight = 10
 
   [[menu.main]]
-    name = "Use Cases"
-    url = "/use-cases/"
+    name = "CBW"
+    url = "/cbw/"
     weight = 20
 
   [[menu.main]]
-    name = "Manual"
-    url = "/manual/"
+    name = "exgel"
+    url = "/exgel/"
     weight = 30
-
-  [[menu.main]]
-    name = "About"
-    url = "/about/"
-    weight = 40
 
   [[menu.main]]
     name = "Contact"
     url = "/contact/"
-    weight = 50
+    weight = 40
