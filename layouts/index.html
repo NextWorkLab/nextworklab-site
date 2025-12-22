@@ -1,40 +1,28 @@
 {{ define "main" }}
-  <section class="home">
-    <h1 class="home-title">{{ .Site.Title }}</h1>
-    {{ with .Site.Params.description }}
-      <p class="home-desc">{{ . }}</p>
-    {{ end }}
+<main style="max-width: 960px; margin: 0 auto; padding: 64px 24px;">
+  <h1 style="font-size: 56px; line-height: 1.05; margin: 0 0 16px 0;">
+    {{ .Site.Title }}
+  </h1>
 
-    <div class="home-grid">
-      <div class="home-block">
-        <h2>Brands</h2>
-        <ul class="linklist">
-          {{ range first 6 (where .Site.RegularPages "Section" "brands").ByWeight }}
-            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-          {{ end }}
-        </ul>
-        <a class="more" href="/brands/">View all →</a>
-      </div>
+  {{ with .Site.Params.description }}
+  <p style="font-size: 18px; margin: 0 0 40px 0;">
+    {{ . }}
+  </p>
+  {{ end }}
 
-      <div class="home-block">
-        <h2>Use Cases</h2>
-        <ul class="linklist">
-          {{ range first 6 (where .Site.RegularPages "Section" "use-cases").ByDate.Reverse }}
-            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-          {{ end }}
-        </ul>
-        <a class="more" href="/use-cases/">View all →</a>
-      </div>
-
-      <div class="home-block">
-        <h2>Manual</h2>
-        <ul class="linklist">
-          {{ range first 6 (where .Site.RegularPages "Section" "manual").ByDate.Reverse }}
-            <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-          {{ end }}
-        </ul>
-        <a class="more" href="/manual/">View all →</a>
-      </div>
-    </div>
-  </section>
+  <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-top: 32px;">
+    <a href="/about/" style="padding: 14px 18px; border: 1px solid #ddd; border-radius: 10px; text-decoration: none;">
+      About
+    </a>
+    <a href="/cbw/" style="padding: 14px 18px; border: 1px solid #ddd; border-radius: 10px; text-decoration: none;">
+      CBW
+    </a>
+    <a href="/exgel/" style="padding: 14px 18px; border: 1px solid #ddd; border-radius: 10px; text-decoration: none;">
+      exgel
+    </a>
+    <a href="/contact/" style="padding: 14px 18px; border: 1px solid #ddd; border-radius: 10px; text-decoration: none;">
+      Contact
+    </a>
+  </div>
+</main>
 {{ end }}
