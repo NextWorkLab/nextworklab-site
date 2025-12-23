@@ -326,4 +326,17 @@ a:hover{ color: var(--link-hover); }
   font-size: 14px;
 }
 
+/* panels: show only one section at a time (About default) */
+.panel{ display: none; }
+.panel.is-default{ display: block; }
+
+/* about layout */
+.about-note{
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* keep hero spacing tidy without center card menu */
+.hero{ padding: 56px 0 24px; }
 
