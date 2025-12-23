@@ -13,28 +13,28 @@
   </head>
 
   <body>
-    <header class="topbar">
-      <div class="container topbar-inner">
-        <a class="brand" href="{{ "/" | relURL }}">NextWork Lab.</a>
+    <div class="shell">
+      <aside class="sidebar" aria-label="Global navigation">
+        <div class="sidebar-inner">
+          <nav class="side-nav">
+            <a href="#about" class="side-link">about</a>
+            <a href="#cbw" class="side-link">cbw</a>
+            <a href="#exgel" class="side-link">exgel</a>
+            <a href="#contact" class="side-link">contact</a>
+          </nav>
+        </div>
+      </aside>
 
-        <nav class="nav" aria-label="Global navigation">
-          <a href="#about">About</a>
-          <a href="#cbw">CBW</a>
-          <a href="#exgel">exgel</a>
-          <a href="#contact">Contact</a>
-        </nav>
-      </div>
-    </header>
+      <main class="main">
+        <div class="main-inner">
+          {{ block "main" . }}{{ end }}
 
-    <main class="container">
-      {{ block "main" . }}{{ end }}
-    </main>
-
-    <footer class="footer">
-      <div class="container">
-        <span class="muted">© {{ now.Year }} NextWork Lab.</span>
-      </div>
-    </footer>
+          <footer class="footer">
+            <span class="muted">© {{ now.Year }} NextWork Lab.</span>
+          </footer>
+        </div>
+      </main>
+    </div>
 
     <script>
       (function () {
@@ -45,7 +45,7 @@
         }
 
         function setActiveNav(hash) {
-          var links = document.querySelectorAll(".nav a[href^='#']");
+          var links = document.querySelectorAll(".side-nav a[href^='#']");
           links.forEach(function (a) {
             a.classList.toggle("is-active", a.getAttribute("href") === hash);
           });
