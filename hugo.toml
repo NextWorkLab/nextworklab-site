@@ -1,3 +1,10 @@
+baseURL = "https://nextworklab.co.kr/"
+languageCode = "en-us"
+title = "NextWork Lab."
+
+[params]
+  description = "제품 소개 및 사용설명서"
+
 [menu]
   [[menu.main]]
     name = "About"
