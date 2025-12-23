@@ -1,19 +1,18 @@
 :root{
-  --bg: #fbfaf6;
+  --bg: #ffffff;
   --text: #0f172a;
-  --muted: rgba(15, 23, 42, 0.55);
+  --muted: #475569;
   --border: rgba(15, 23, 42, 0.14);
 }
 
 *{ box-sizing: border-box; }
-
 html{ scroll-behavior: smooth; }
 
 body{
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   line-height: 1.7;
 }
 
@@ -22,116 +21,90 @@ a{ color: #0000EE; text-decoration: underline; text-underline-offset: 3px; }
 a:visited{ color: #551A8B; }
 a:active{ color: #EE0000; }
 
+/* layout: left sidebar + right content + vertical divider */
 .shell{
   min-height: 100vh;
   display: grid;
   grid-template-columns: 220px 1fr;
 }
 
-/* left nav */
 .sidebar{
-  padding: 56px 24px 24px;
+  padding: 42px 24px 24px;
 }
 
 .sidebar-inner{
   position: sticky;
-  top: 40px;
+  top: 32px;
 }
+
+.site-name a{
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 650;
+}
+.site-name a:visited{ color: var(--text); }
 
 .side-nav{
+  margin-top: 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
-.side-link{
-  text-decoration: none;
-  color: rgba(15, 23, 42, 0.45);
-  font-style: italic;
-  font-size: 30px;
-  line-height: 1.05;
-}
-
-.side-link:visited{
-  color: rgba(15, 23, 42, 0.45);
-}
-
-.side-link:hover{
+/* nav links: keep classic link colors, but make active clearer */
+.side-nav a{
   text-decoration: underline;
   text-underline-offset: 4px;
 }
-
-.side-link.is-active{
-  color: rgba(15, 23, 42, 0.95);
-  font-style: normal;
-  text-decoration: none;
+.side-nav a.is-active{
+  text-decoration-thickness: 2px;
 }
 
-/* main content with vertical divider */
 .main{
   border-left: 1px solid var(--border);
 }
 
 .main-inner{
-  padding: 56px 56px 40px;
-  max-width: 900px;
+  padding: 42px 56px 40px;
+  max-width: 980px;
 }
 
-@media (max-width: 900px){
-  .shell{ grid-template-columns: 1fr; }
-  .sidebar{ padding: 18px 18px 0; }
-  .main{ border-left: 0; }
-  .main-inner{ padding: 18px 18px 36px; }
-  .side-nav{
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 12px 16px;
-  }
-  .side-link{
-    font-size: 18px;
-    font-style: normal;
-  }
-}
+/* panels: show only one section at a time */
+.panel{ display: none; }
+.panel.is-default{ display: block; }
 
-/* panels */
-.panel{ display:none; }
-.panel.is-default{ display:block; }
-
-/* typography inside panels */
-.hero{
-  padding: 0;
-}
+/* typography */
+.hero{ padding: 0; }
 
 .eyebrow{
-  margin: 0 0 14px;
-  color: rgba(15, 23, 42, 0.60);
+  margin: 0 0 12px;
+  color: var(--muted);
   letter-spacing: 0.02em;
-  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 
 .headline{
-  margin: 0 0 18px;
-  font-size: clamp(34px, 4vw, 58px);
+  margin: 0 0 14px;
+  font-size: clamp(34px, 4vw, 64px);
   line-height: 1.05;
   letter-spacing: -0.02em;
 }
 
 .subhead{
-  margin: 0 0 26px;
-  color: rgba(15, 23, 42, 0.75);
+  margin: 0 0 22px;
+  color: var(--muted);
   font-size: 20px;
   max-width: 70ch;
 }
 
 .about-note{
-  margin-top: 16px;
-  color: rgba(15, 23, 42, 0.60);
+  margin-top: 14px;
+  color: var(--muted);
   font-size: 18px;
   max-width: 70ch;
 }
 
 .brand-card{
-  border: 1px solid rgba(15, 23, 42, 0.16);
+  border: 1px solid var(--border);
   border-radius: 18px;
   padding: 26px 26px;
   background: transparent;
@@ -145,8 +118,9 @@ a:active{ color: #EE0000; }
 
 .brand-one-liner{
   margin: 0 0 14px;
-  color: rgba(15, 23, 42, 0.70);
+  color: var(--muted);
   font-size: 20px;
+  max-width: 70ch;
 }
 
 .bullet{
@@ -165,6 +139,19 @@ a:active{ color: #EE0000; }
   border-top: 1px solid var(--border);
 }
 
-.muted{
-  color: rgba(15, 23, 42, 0.60);
+.muted{ color: var(--muted); }
+
+/* mobile */
+@media (max-width: 900px){
+  .shell{ grid-template-columns: 1fr; }
+  .sidebar{ padding: 18px 18px 0; }
+  .main{ border-left: 0; }
+  .main-inner{ padding: 18px 18px 36px; }
+
+  .side-nav{
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    margin-top: 10px;
+  }
 }
