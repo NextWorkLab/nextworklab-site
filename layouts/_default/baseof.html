@@ -61,6 +61,40 @@
   })();
 </script>
 
-  
+  <script>
+  (function () {
+    function setActiveNav(hash) {
+      var links = document.querySelectorAll(".nav a[href^='#']");
+      links.forEach(function (a) {
+        a.classList.remove("is-active");
+        if (a.getAttribute("href") === hash) a.classList.add("is-active");
+      });
+    }
+
+    function showPanelFromHash() {
+      var hash = window.location.hash || "#about";
+      var id = hash.slice(1);
+
+      var panels = document.querySelectorAll(".panel");
+      panels.forEach(function (p) { p.style.display = "none"; });
+
+      var target = document.getElementById(id);
+      if (target && target.classList.contains("panel")) {
+        target.style.display = "block";
+      } else {
+        var about = document.getElementById("about");
+        if (about) about.style.display = "block";
+        hash = "#about";
+      }
+
+      setActiveNav(hash);
+      window.scrollTo(0, 0);
+    }
+
+    window.addEventListener("hashchange", showPanelFromHash);
+    document.addEventListener("DOMContentLoaded", showPanelFromHash);
+  })();
+</script>
+
   </body>
 </html>
