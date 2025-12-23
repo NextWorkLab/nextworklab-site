@@ -1,77 +1,68 @@
 <!doctype html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 
-    {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
-    <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
-  </head>
+  {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+</head>
 
-  <body>
-    <div class="shell">
-      <aside class="sidebar">
-        <div class="sidebar-inner">
-          <h1 class="site-name">
-            <a href="{{ "/" | relURL }}">NextWork Lab.</a>
-          </h1>
+<body>
+<div class="shell">
 
-          <nav class="side-nav" aria-label="Site">
-            <a href="#about">About</a>
-            <a href="#cbw">CBW</a>
-            <a href="#exgel">exgel</a>
-            <a href="#contact">Contact</a>
-          </nav>
-        </div>
-      </aside>
-
-      <div class="main">
-        <main class="main-inner">
-          {{ block "main" . }}{{ end }}
-        </main>
-
-        <footer class="footer">
-          <div class="main-inner">
-            <span class="muted">© {{ now.Year }} NextWork Lab.</span>
-          </div>
-        </footer>
+  <!-- sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+      <div class="site-name">
+        <a href="{{ "/" | relURL }}">NextWork Lab.</a>
       </div>
+
+      <nav class="side-nav">
+        <a href="#about">About</a>
+        <a href="#cbw">CBW</a>
+        <a href="#exgel">exgel</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- main -->
+  <main class="main">
+    <div class="main-inner">
+      {{ block "main" . }}{{ end }}
     </div>
 
-    <script>
-      (function () {
-        function setActiveNav(hash) {
-          var links = document.querySelectorAll(".side-nav a[href^='#']");
-          links.forEach(function (a) {
-            a.classList.remove("is-active");
-            if (a.getAttribute("href") === hash) a.classList.add("is-active");
-          });
-        }
+    <footer class="footer">
+      <div class="footer-inner">
+        <span class="muted">© {{ now.Year }} NextWork Lab.</span>
+      </div>
+    </footer>
+  </main>
 
-        function showPanelFromHash() {
-          var hash = window.location.hash || "#about";
-          var id = hash.slice(1);
+</div>
 
-          var panels = document.querySelectorAll(".panel");
-          panels.forEach(function (p) { p.style.display = "none"; });
+<script>
+(function(){
+  function showPanel(){
+    var hash = location.hash || "#about";
+    var panels = document.querySelectorAll(".panel");
+    panels.forEach(p=>p.classList.remove("is-default"));
 
-          var target = document.getElementById(id);
-          if (target && target.classList.contains("panel")) {
-            target.style.display = "block";
-          } else {
-            var about = document.getElementById("about");
-            if (about) about.style.display = "block";
-            hash = "#about";
-          }
+    var target = document.querySelector(hash);
+    if(target){ target.classList.add("is-default"); }
 
-          setActiveNav(hash);
-          window.scrollTo(0, 0);
-        }
+    document.querySelectorAll(".side-nav a").forEach(a=>{
+      a.classList.toggle("is-active", a.getAttribute("href")===hash);
+    });
 
-        window.addEventListener("hashchange", showPanelFromHash);
-        document.addEventListener("DOMContentLoaded", showPanelFromHash);
-      })();
-    </script>
-  </body>
+    window.scrollTo(0,0);
+  }
+  window.addEventListener("hashchange", showPanel);
+  document.addEventListener("DOMContentLoaded", showPanel);
+})();
+</script>
+
+</body>
 </html>
