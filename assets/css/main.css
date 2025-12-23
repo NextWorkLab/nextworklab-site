@@ -348,3 +348,37 @@ a:hover{ color: var(--link-hover); }
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+.panel{ display:none; }
+.panel.is-default{ display:block; }
+
+.topbar{
+  position: sticky;
+  top: 0;
+  backdrop-filter: blur(10px);
+  background: rgba(255,255,255,0.75);
+  border-bottom: 1px solid var(--border);
+  z-index: 20;
+}
+
+.topbar-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+  padding:14px 0;
+}
+
+.nav a{
+  text-decoration:none;
+  padding:6px 4px;
+}
+
+.nav a:hover,
+.nav a:focus-visible,
+.nav a.is-active{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  outline: none;
+}
+
