@@ -28,8 +28,13 @@ a:active{ color: #EE0000; }
   grid-template-columns: 220px 1fr;
 }
 
+/*
+  Key: align left nav baseline with right hero content.
+  main-inner has top padding 42px, hero has top padding 48px.
+  So sidebar top padding = 42 + 48 = 90px (adjustable).
+*/
 .sidebar{
-  padding: 42px 24px 24px;
+  padding: 90px 24px 24px;
 }
 
 .sidebar-inner{
@@ -37,16 +42,22 @@ a:active{ color: #EE0000; }
   top: 32px;
 }
 
+.site-name{
+  margin: 0 0 22px;
+}
+
 .site-name a{
   color: var(--text);
   text-decoration: none;
   font-weight: 650;
-  margin-bottom: 22px;
 }
-.site-name a:visited{ color: var(--text); }
+
+.site-name a:visited{
+  color: var(--text);
+}
 
 .side-nav{
-  margin-top: 18px;
+  margin: 0;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -101,7 +112,6 @@ a:active{ color: #EE0000; }
   max-width: 62ch;
 }
 
-/* second paragraph spacing */
 .subhead + .subhead{
   margin-top: 10px;
 }
@@ -134,11 +144,14 @@ a:active{ color: #EE0000; }
     top: auto;
   }
 
+  .site-name{
+    margin: 0 0 10px;
+  }
+
   .side-nav{
     flex-direction: row;
     flex-wrap: wrap;
     gap: 10px 14px;
-    margin-top: 10px;
     padding-bottom: 14px;
   }
 
