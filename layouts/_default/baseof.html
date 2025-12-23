@@ -3,20 +3,16 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
     <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
-    {{ with site.Params.description }}<meta name="description" content="{{ . }}" />{{ end }}
 
     {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
-
-    {{ hugo.Generator }}
   </head>
 
   <body>
     <header class="topbar">
-      <div class="container">
-        <a class="brand" href="{{ "/" | relURL }}">{{ site.Title }}</a>
+      <div class="container topbar-inner">
+        <a class="brand" href="{{ "/" | relURL }}">NextWork Lab.</a>
 
         <nav class="nav">
           <a href="#about">About</a>
@@ -33,68 +29,43 @@
 
     <footer class="footer">
       <div class="container">
-        <span class="muted">© {{ now.Year }} {{ site.Title }}</span>
+        <span class="muted">© {{ now.Year }} NextWork Lab.</span>
       </div>
     </footer>
- <script>
-  (function () {
-    function showPanelFromHash() {
-      var hash = window.location.hash || "#about";
-      var id = hash.replace("#", "");
-      var panels = document.querySelectorAll(".panel");
-      var target = document.getElementById(id);
 
-      panels.forEach(function (p) { p.style.display = "none"; });
+    <script>
+      (function () {
+        function setActiveNav(hash) {
+          var links = document.querySelectorAll(".nav a[href^='#']");
+          links.forEach(function (a) {
+            a.classList.remove("is-active");
+            if (a.getAttribute("href") === hash) a.classList.add("is-active");
+          });
+        }
 
-      if (target && target.classList.contains("panel")) {
-        target.style.display = "block";
-      } else {
-        var about = document.getElementById("about");
-        if (about) about.style.display = "block";
-      }
+        function showPanelFromHash() {
+          var hash = window.location.hash || "#about";
+          var id = hash.slice(1);
 
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
+          var panels = document.querySelectorAll(".panel");
+          panels.forEach(function (p) { p.style.display = "none"; });
 
-    window.addEventListener("hashchange", showPanelFromHash);
-    document.addEventListener("DOMContentLoaded", showPanelFromHash);
-  })();
-</script>
+          var target = document.getElementById(id);
+          if (target && target.classList.contains("panel")) {
+            target.style.display = "block";
+          } else {
+            var about = document.getElementById("about");
+            if (about) about.style.display = "block";
+            hash = "#about";
+          }
 
-  <script>
-  (function () {
-    function setActiveNav(hash) {
-      var links = document.querySelectorAll(".nav a[href^='#']");
-      links.forEach(function (a) {
-        a.classList.remove("is-active");
-        if (a.getAttribute("href") === hash) a.classList.add("is-active");
-      });
-    }
+          setActiveNav(hash);
+          window.scrollTo(0, 0);
+        }
 
-    function showPanelFromHash() {
-      var hash = window.location.hash || "#about";
-      var id = hash.slice(1);
-
-      var panels = document.querySelectorAll(".panel");
-      panels.forEach(function (p) { p.style.display = "none"; });
-
-      var target = document.getElementById(id);
-      if (target && target.classList.contains("panel")) {
-        target.style.display = "block";
-      } else {
-        var about = document.getElementById("about");
-        if (about) about.style.display = "block";
-        hash = "#about";
-      }
-
-      setActiveNav(hash);
-      window.scrollTo(0, 0);
-    }
-
-    window.addEventListener("hashchange", showPanelFromHash);
-    document.addEventListener("DOMContentLoaded", showPanelFromHash);
-  })();
-</script>
-
+        window.addEventListener("hashchange", showPanelFromHash);
+        document.addEventListener("DOMContentLoaded", showPanelFromHash);
+      })();
+    </script>
   </body>
 </html>
