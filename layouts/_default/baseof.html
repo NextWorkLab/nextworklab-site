@@ -36,5 +36,31 @@
         <span class="muted">© {{ now.Year }} {{ site.Title }}</span>
       </div>
     </footer>
+ <script>
+  (function () {
+    function showPanelFromHash() {
+      var hash = window.location.hash || "#about";
+      var id = hash.replace("#", "");
+      var panels = document.querySelectorAll(".panel");
+      var target = document.getElementById(id);
+
+      panels.forEach(function (p) { p.style.display = "none"; });
+
+      if (target && target.classList.contains("panel")) {
+        target.style.display = "block";
+      } else {
+        var about = document.getElementById("about");
+        if (about) about.style.display = "block";
+      }
+
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    window.addEventListener("hashchange", showPanelFromHash);
+    document.addEventListener("DOMContentLoaded", showPanelFromHash);
+  })();
+</script>
+
+  
   </body>
 </html>
