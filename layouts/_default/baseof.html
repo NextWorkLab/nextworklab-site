@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
+
+    <title>
+      {{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}
+    </title>
 
     {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
     <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}" />
@@ -14,7 +17,7 @@
       <div class="container topbar-inner">
         <a class="brand" href="{{ "/" | relURL }}">NextWork Lab.</a>
 
-        <nav class="nav">
+        <nav class="nav" aria-label="Global navigation">
           <a href="#about">About</a>
           <a href="#cbw">CBW</a>
           <a href="#exgel">exgel</a>
@@ -35,18 +38,21 @@
 
     <script>
       (function () {
+        function ensureDefaultHash() {
+          if (!window.location.hash || window.location.hash.length <= 1) {
+            window.location.replace("#about");
+          }
+        }
+
         function setActiveNav(hash) {
           var links = document.querySelectorAll(".nav a[href^='#']");
           links.forEach(function (a) {
-            a.classList.remove("is-active");
-            if (a.getAttribute("href") === hash) a.classList.add("is-active");
+            a.classList.toggle("is-active", a.getAttribute("href") === hash);
           });
         }
 
-        function showPanelFromHash() {
-          var hash = window.location.hash || "#about";
+        function showPanel(hash) {
           var id = hash.slice(1);
-
           var panels = document.querySelectorAll(".panel");
           panels.forEach(function (p) { p.style.display = "none"; });
 
@@ -63,8 +69,17 @@
           window.scrollTo(0, 0);
         }
 
-        window.addEventListener("hashchange", showPanelFromHash);
-        document.addEventListener("DOMContentLoaded", showPanelFromHash);
+        function render() {
+          var hash = window.location.hash || "#about";
+          showPanel(hash);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+          ensureDefaultHash();
+          render();
+        });
+
+        window.addEventListener("hashchange", render);
       })();
     </script>
   </body>
