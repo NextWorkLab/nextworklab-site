@@ -41,6 +41,7 @@ a:active{ color: #EE0000; }
   color: var(--text);
   text-decoration: none;
   font-weight: 650;
+  margin-bottom: 22px;
 }
 .site-name a:visited{ color: var(--text); }
 
@@ -88,13 +89,14 @@ a:active{ color: #EE0000; }
   margin: 0 0 20px;
   font-size: clamp(36px, 5vw, 56px);
   line-height: 1.08;
+  max-width: 18ch;
   letter-spacing: -0.025em;
 }
 
 .subhead{
   margin: 0 0 16px;
-  color: var(--muted);
-  font-size: 18px;
+  color: var(--text);
+  font-size: 19px;
   line-height: 1.75;
   max-width: 62ch;
 }
