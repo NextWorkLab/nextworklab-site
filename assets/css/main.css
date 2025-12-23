@@ -340,3 +340,11 @@ a:hover{ color: var(--link-hover); }
 /* keep hero spacing tidy without center card menu */
 .hero{ padding: 56px 0 24px; }
 
+.panel{ display:none; }
+.panel.is-default{ display:block; }
+
+/* optional: active nav underline only */
+.nav a.is-active{
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
