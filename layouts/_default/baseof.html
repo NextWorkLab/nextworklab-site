@@ -13,9 +13,11 @@
     <div class="shell">
       <aside class="sidebar">
         <div class="sidebar-inner">
-          <div class="site-name"><a href="#about">NextWork Lab.</a></div>
+          <h1 class="site-name">
+            <a href="{{ "/" | relURL }}">NextWork Lab.</a>
+          </h1>
 
-          <nav class="side-nav">
+          <nav class="side-nav" aria-label="Site">
             <a href="#about">About</a>
             <a href="#cbw">CBW</a>
             <a href="#exgel">exgel</a>
@@ -24,17 +26,17 @@
         </div>
       </aside>
 
-      <main class="main">
-        <div class="main-inner">
+      <div class="main">
+        <main class="main-inner">
           {{ block "main" . }}{{ end }}
-        </div>
+        </main>
 
         <footer class="footer">
-          <div class="footer-inner">
+          <div class="main-inner">
             <span class="muted">© {{ now.Year }} NextWork Lab.</span>
           </div>
         </footer>
-      </main>
+      </div>
     </div>
 
     <script>
