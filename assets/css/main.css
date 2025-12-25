@@ -1,240 +1,113 @@
-:root{
-  --bg:#ffffff;
-  --text:#0f172a;
-  --muted:#475569;
-  --border:rgba(15,23,42,0.14);
-  --soft:rgba(15,23,42,0.07);
+/* assets/css/main.css 수정 제안 */
+:root {
+  /* 로고에서 추출한 첨단 이미지의 컬러 시스템 */
+  --bg: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: rgba(15, 23, 42, 0.08);
+  --accent-teal: #124F5E;  /* 로고의 메인 청록색 */
+  --accent-coral: #F15A5A; /* 로고의 포인트 코랄색 */
+  --gradient: linear-gradient(135deg, var(--accent-teal), var(--accent-coral));
 }
 
-/* reset */
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,
-    "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",Arial,sans-serif;
-  line-height:1.75;
-  -webkit-font-smoothing:antialiased;
-  text-rendering:optimizeLegibility;
+body {
+  letter-spacing: -0.02em; /* 텍스트를 더 탄탄하게 보이게 함 */
+  word-break: keep-all;
 }
 
-a{
-  color:inherit;
-  text-decoration:underline;
-  text-underline-offset:4px;
-}
-a:hover{opacity:.85;}
-
-/* layout */
-.shell{
-  min-height:100vh;
-  display:grid;
-  grid-template-columns:280px 1fr;
+/* 사이드바: 더 가볍고 정교하게 */
+.sidebar {
+  padding: 60px 40px; /* 여백 확장으로 공간감 확보 */
 }
 
-/* sidebar */
-.sidebar{
-  padding:40px 28px 24px;
-}
-.sidebar-inner{
-  position:sticky;
-  top:28px;
-}
-
-.site-name{
-  margin:0 0 10px;
-  font-weight:700;
-  letter-spacing:-0.01em;
-}
-.site-name a{
-  text-decoration:none;
+.site-name a {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; /* 로고 그라데이션 적용 */
 }
 
-.site-tagline{
-  margin:0 0 22px;
-  font-size:13px;
-  line-height:1.6;
-  color:var(--muted);
-  max-width:30ch;
-  word-break:keep-all;
+.side-nav {
+  margin-top: 32px;
+  gap: 12px;
 }
 
-.side-nav{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  padding-top:12px;
-  border-top:1px solid var(--soft);
+.side-nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  transition: all 0.2s ease;
 }
 
-.side-nav a{
-  text-decoration:none;
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:6px 0;
-  color:var(--text);
+.side-nav a:hover {
+  color: var(--text);
+  transform: translateX(4px); /* 호버 시 미세한 움직임 */
 }
 
-.side-nav a::before{
-  content:"";
-  width:14px;
-  height:1px;
-  background:transparent;
-  display:inline-block;
+.side-nav a.is-active {
+  color: var(--accent-coral);
+  font-weight: 700;
 }
 
-.side-nav a.is-active{
-  font-weight:650;
+.side-nav a.is-active::before {
+  background: var(--accent-coral);
+  width: 20px;
+  height: 2px; /* 더 굵고 선명한 활성화 표시 */
 }
 
-.side-nav a.is-active::before{
-  background:rgba(15,23,42,.35);
+/* 메인 콘텐츠: 과감한 타이포그래피 */
+.main-inner {
+  padding: 80px 100px; /* 본문 여백 증가 */
 }
 
-.side-nav a:hover{
-  text-decoration:underline;
-  text-underline-offset:6px;
+.headline {
+  font-weight: 800;
+  font-size: clamp(32px, 5vw, 56px); /* 더 크고 압도적인 헤드라인 */
+  line-height: 1.1;
+  margin-bottom: 32px;
+  color: var(--text);
 }
 
-/* main */
-.main{
-  border-left:1px solid var(--soft);
-  display:flex;
-  flex-direction:column;
-  min-height:100vh;
+.subhead {
+  font-size: 19px;
+  font-weight: 450;
+  color: var(--text);
+  line-height: 1.8;
+  opacity: 0.9;
 }
 
-.main-inner{
-  padding:56px 72px 48px;
-  max-width:980px;
+.section-desc {
+  font-size: 16px;
+  border-left: 2px solid var(--accent-teal); /* 강조 라인 추가 */
+  padding-left: 20px;
+  margin: 40px 0;
 }
 
-/* panels */
-.panel{display:none;}
-.panel.is-default{display:block;}
-
-/* hero */
-.hero{
-  padding:56px 0 24px;
-}
-.hero--about{padding-top:72px;}
-.hero--product{padding-top:54px;}
-.hero--contact{padding-top:56px;}
-
-/* typography */
-.headline{
-  margin:0 0 20px;
-  font-size:clamp(30px,4.4vw,48px);
-  line-height:1.08;
-  letter-spacing:-0.03em;
-  max-width:22ch;
+/* 패널 전환 애니메이션 */
+.panel {
+  display: none;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1); /* 부드러운 등장 */
 }
 
-.subhead{
-  margin:0 0 18px;
-  font-size:17px;
-  line-height:1.9;
-  max-width:68ch;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.section-desc{
-  margin:0 0 18px;
-  font-size:15px;
-  line-height:1.9;
-  color:var(--muted);
-  max-width:72ch;
+.panel.is-default { display: block; }
+
+/* 제품 설명(CBW, Laevo) 스타일 */
+.product h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-teal);
+  margin-top: 48px;
 }
 
-.rule{
-  margin:22px 0 18px;
-  border:0;
-  border-top:1px solid var(--soft);
-}
-
-/* product content */
-.product h2{
-  margin:28px 0 10px;
-  font-size:18px;
-  letter-spacing:-0.01em;
-}
-.product h3{
-  margin:22px 0 8px;
-  font-size:15px;
-  letter-spacing:-0.01em;
-  color:var(--text);
-}
-.product p{
-  margin:0 0 16px;
-  font-size:15.5px;
-  line-height:1.95;
-  max-width:72ch;
-}
-
-/* contact list */
-.contact-list{
-  margin-top:18px;
-  max-width:72ch;
-  border-top:1px solid var(--soft);
-}
-.contact-row{
-  display:grid;
-  grid-template-columns:120px 1fr;
-  gap:12px;
-  padding:12px 0;
-  border-bottom:1px solid var(--soft);
-}
-.contact-key{
-  font-size:13px;
-  color:var(--muted);
-}
-.contact-val{
-  font-size:15px;
-  color:var(--text);
-  word-break:break-word;
-}
-
-/* footer */
-.footer{
-  margin-top:auto;
-  border-top:1px solid var(--soft);
-  padding:18px 0;
-}
-.footer-inner{
-  padding:0 72px;
-  max-width:980px;
-}
-.muted{color:var(--muted);}
-
-/* mobile */
-@media (max-width:900px){
-  .shell{grid-template-columns:1fr;}
-
-  .sidebar{
-    padding:18px 18px 10px;
-    border-bottom:1px solid var(--soft);
-  }
-  .sidebar-inner{position:static;}
-
-  .side-nav{
-    flex-direction:row;
-    flex-wrap:wrap;
-    gap:10px 14px;
-    padding-top:10px;
-  }
-  .side-nav a{
-    padding:6px 0;
-  }
-  .side-nav a::before{display:none;}
-
-  .main{border-left:0;}
-  .main-inner{padding:28px 18px 40px;}
-  .footer-inner{padding:0 18px;}
-
-  .contact-row{
-    grid-template-columns:1fr;
-    gap:6px;
-  }
+.product p {
+  font-size: 16px;
+  color: var(--muted);
 }
