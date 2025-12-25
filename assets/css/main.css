@@ -260,8 +260,14 @@ a:active{color:#EE0000;}
   .main-inner{padding:24px 18px 40px;}
   .footer-inner{padding:0 18px;}
 }
+.brand-logo{
+  display: inline-block;
+  line-height: 0;
+}
+
 .brand-logo img{
   display: block;
-  height: 40px;   /* 36~44px 사이에서 취향대로 */
+  height: 34px;      /* 여기만 취향대로: 28~40 추천 */
   width: auto;
+  max-width: 100%;
 }
