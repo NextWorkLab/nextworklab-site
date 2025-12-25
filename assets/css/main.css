@@ -1,19 +1,19 @@
-/* NextWork Lab. - Single Column Modern Style */
+/* NextWork Lab. Final Sophisticated Style */
 
 :root {
-  /* 브랜드 컬러 시스템 */
+  /* BI 로고에서 추출한 핵심 컬러 */
+  --accent-teal: #124F5E;  /* 심볼의 짙은 청록색 */
+  --accent-coral: #F15A5A; /* 심볼의 밝은 코랄색 */
+  --gradient: linear-gradient(135deg, var(--accent-teal), var(--accent-coral));
+  
   --bg: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
   --border: rgba(15, 23, 42, 0.08);
-  --soft: rgba(15, 23, 42, 0.04);
+  --soft: rgba(15, 23, 42, 0.03);
   
-  --accent-teal: #124F5E;
-  --accent-coral: #F15A5A;
-  --gradient: linear-gradient(135deg, var(--accent-teal), var(--accent-coral));
-  
-  /* 레이아웃 설정 */
-  --max-width: 860px; /* 본문의 가독성을 위한 최적 너비 */
+  /* 본문 최적 가독성 너비 */
+  --max-width: 820px; 
 }
 
 /* 기본 설정 */
@@ -24,42 +24,39 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, "Noto Sans KR", sans-serif;
+  /* Inter 또는 시스템 폰트 사용 */
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   line-height: 1.8;
-  letter-spacing: -0.015em;
+  letter-spacing: -0.01em;
   -webkit-font-smoothing: antialiased;
   word-break: keep-all;
 }
 
-a {
-  color: inherit;
-  transition: opacity 0.2s ease;
-}
-
-/* 레이아웃 쉘 */
+/* 레이아웃: 싱글 컬럼 구조 */
 .shell {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-/* 상단 영역 (기존 Sidebar를 Header 형태로 변경) */
+/* 헤더 영역 (기존 Sidebar 클래스 활용) */
 .sidebar {
-  padding: 60px 20px 40px;
+  padding: 80px 20px 40px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
 }
 
 .site-name {
-  margin: 0 0 12px;
+  margin-bottom: 16px;
 }
 
 .site-name a {
   text-decoration: none;
-  font-size: 24px;
+  font-size: 26px;
   font-weight: 850;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
+  /* 로고의 그라데이션을 텍스트에 투영 */
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -68,14 +65,14 @@ a {
 .site-tagline {
   font-size: 15px;
   color: var(--muted);
-  font-weight: 450;
-  margin-bottom: 32px;
+  max-width: 40ch;
+  margin-bottom: 40px;
 }
 
 /* 상단 네비게이션 */
 .side-nav {
   display: flex;
-  gap: 24px;
+  gap: 28px;
   border-bottom: 1px solid var(--border);
   padding-bottom: 12px;
 }
@@ -85,6 +82,7 @@ a {
   font-size: 14px;
   font-weight: 600;
   color: var(--muted);
+  transition: color 0.2s ease;
   position: relative;
 }
 
@@ -92,6 +90,7 @@ a {
   color: var(--text);
 }
 
+/* 활성화 메뉴 하단 라인 (로고 포인트 컬러 사용) */
 .side-nav a.is-active::after {
   content: "";
   position: absolute;
@@ -102,97 +101,79 @@ a {
   background: var(--accent-coral);
 }
 
-/* 메인 콘텐츠 영역 */
-.main {
-  flex: 1;
-}
+/* 메인 콘텐츠 */
+.main { flex: 1; }
 
 .main-inner {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 40px 20px 100px;
+  padding: 40px 20px 120px;
 }
 
-/* 애니메이션 및 타이포그래피 */
+/* 애니메이션 효과 */
 .panel {
   display: none;
-  animation: fadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
 .panel.is-default { display: block; }
 
+/* 타이포그래피 */
 .headline {
   margin: 0 0 32px;
-  font-size: clamp(32px, 5vw, 52px);
+  font-size: clamp(34px, 5vw, 56px);
   font-weight: 850;
   line-height: 1.1;
   letter-spacing: -0.05em;
 }
 
 .subhead {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 450;
-  line-height: 1.8;
   margin-bottom: 24px;
 }
 
 .section-desc {
-  margin: 40px 0;
+  margin: 48px 0;
   font-size: 16px;
   color: var(--muted);
   padding-left: 20px;
   border-left: 2px solid var(--accent-teal);
 }
 
-.rule {
-  margin: 60px 0;
-  border: 0;
-  border-top: 1px solid var(--border);
-}
-
-/* 제품 상세 섹션 */
-.product h3 {
-  margin: 48px 0 12px;
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--accent-teal);
-  font-weight: 700;
-}
-
-.product p { margin-bottom: 20px; color: var(--muted); }
-
-/* 푸터 영역 (우측 정렬 적용) */
+/* 푸터 영역: 우측 정렬 */
 .footer {
   border-top: 1px solid var(--border);
-  padding: 40px 0;
-  background: var(--soft);
+  padding: 50px 0;
+  background: #fafafa;
 }
 
 .footer-inner {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 20px;
-  /* 우측 정렬 핵심 코드 */
+  /* 우측 정렬 설정 */
   display: flex;
   justify-content: flex-end;
 }
 
 .muted {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: var(--muted);
 }
 
-/* 모바일 최적화 */
+/* 모바일 대응 */
 @media (max-width: 600px) {
-  .side-nav { gap: 16px; }
+  .sidebar { padding-top: 40px; }
+  .side-nav { gap: 18px; overflow-x: auto; white-space: nowrap; }
   .headline { font-size: 32px; }
+  .footer-inner { justify-content: center; } /* 모바일은 중앙 정렬 */
 }
