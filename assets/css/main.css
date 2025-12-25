@@ -52,6 +52,15 @@ a:active{color:#EE0000;}
   flex-direction:column;
   gap:12px;
 }
+
+.site-tagline{
+  margin: -8px 0 18px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 28ch;
+}
+
 .side-nav a{
   color:var(--text);
   text-decoration:none;
