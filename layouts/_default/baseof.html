@@ -6,15 +6,16 @@
   <title>{{ if .IsHome }}{{ site.Title }}{{ else }}{{ .Title }} · {{ site.Title }}{{ end }}</title>
 
   {{ $css := resources.Get "css/main.css" | minify | fingerprint }}
-  <link rel="stylesheet" href="{{ $css.RelPermalink }}" integrity="{{ $css.Data.Integrity }}">
+  <link rel="stylesheet" href="{{ $css.RelPermalink }}">
 </head>
 
 <body>
 <div class="shell">
 
-  <!-- sidebar -->
+  <!-- Sidebar -->
   <aside class="sidebar">
     <div class="sidebar-inner">
+
       <div class="site-name">
         <a href="{{ "/" | relURL }}">NextWork Lab.</a>
       </div>
@@ -25,10 +26,11 @@
         <a href="#exgel">exgel</a>
         <a href="#contact">Contact</a>
       </nav>
+
     </div>
   </aside>
 
-  <!-- main -->
+  <!-- Main -->
   <main class="main">
     <div class="main-inner">
       {{ block "main" . }}{{ end }}
@@ -47,18 +49,21 @@
 (function(){
   function showPanel(){
     var hash = location.hash || "#about";
-    var panels = document.querySelectorAll(".panel");
-    panels.forEach(p=>p.classList.remove("is-default"));
 
-    var target = document.querySelector(hash);
-    if(target){ target.classList.add("is-default"); }
-
-    document.querySelectorAll(".side-nav a").forEach(a=>{
-      a.classList.toggle("is-active", a.getAttribute("href")===hash);
+    document.querySelectorAll(".panel").forEach(function(p){
+      p.classList.remove("is-default");
     });
 
-    window.scrollTo(0,0);
+    var target = document.querySelector(hash);
+    if(target){
+      target.classList.add("is-default");
+    }
+
+    document.querySelectorAll(".side-nav a").forEach(function(a){
+      a.classList.toggle("is-active", a.getAttribute("href") === hash);
+    });
   }
+
   window.addEventListener("hashchange", showPanel);
   document.addEventListener("DOMContentLoaded", showPanel);
 })();
