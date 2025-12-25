@@ -59,98 +59,6 @@ a:active{color:#EE0000;}
 .side-nav a.is-active{
   text-decoration-thickness:2px;
 }
-/* ===== sidebar text additions ===== */
-.site-tagline{
-  margin:-8px 0 18px;
-  font-size:13px;
-  line-height:1.6;
-  color:var(--muted);
-  max-width:26ch;
-}
-
-
-/* ===== nav active polish ===== */
-.side-nav a{
-  display:inline-block;
-  padding:2px 0;
-}
-
-.side-nav a.is-active{
-  text-decoration:none;
-  font-weight:650;
-  position:relative;
-}
-
-.side-nav a.is-active::after{
-  content:"";
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:-6px;
-  height:2px;
-  background:var(--text);
-  opacity:0.18;
-}
-
-/* ===== content rhythm ===== */
-.section-rule{
-  margin:26px 0 18px;
-  border:0;
-  border-top:1px solid var(--border);
-}
-
-.section-title{
-  margin:26px 0 8px;
-  font-size:18px;
-  letter-spacing:-0.01em;
-}
-
-.section-desc{
-  margin:0 0 18px;
-  color:var(--muted);
-  max-width:68ch;
-}
-
-/* ===== contact info block ===== */
-.contact-block{
-  margin-top:18px;
-  padding:14px 16px;
-  border:1px solid var(--border);
-  border-radius:14px;
-  background:rgba(15,23,42,0.02);
-  max-width:68ch;
-}
-
-.contact-row{
-  display:grid;
-  grid-template-columns:120px 1fr;
-  gap:10px;
-  padding:10px 0;
-  border-top:1px solid rgba(15,23,42,0.08);
-}
-
-.contact-row:first-child{
-  border-top:0;
-  padding-top:0;
-}
-
-.contact-label{
-  color:var(--muted);
-  font-size:13px;
-}
-
-.contact-value{
-  font-size:15px;
-  color:var(--text);
-  word-break:break-word;
-}
-
-@media (max-width:900px){
-  .contact-row{
-    grid-template-columns:1fr;
-    gap:6px;
-  }
-}
 
 /* ===== main ===== */
 .main{
@@ -236,15 +144,4 @@ a:active{color:#EE0000;}
   .main{border-left:0;}
   .main-inner{padding:24px 18px 40px;}
   .footer-inner{padding:0 18px;}
-}
-.brand-logo{
-  display: inline-block;
-  line-height: 0;
-}
-
-.brand-logo img{
-  display: block;
-  height: 34px;      /* 여기만 취향대로: 28~40 추천 */
-  width: auto;
-  max-width: 100%;
 }
