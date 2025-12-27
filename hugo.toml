@@ -7,18 +7,18 @@ title = "NextWork Lab."
 
 [menu]
   [[menu.main]]
-    name = "About"
+    name = "소개"
     url = "#about"
     weight = 10
 
   [[menu.main]]
-    name = "CBW"
-    url = "#cbw"
+    name = "신체기능"
+    url = "#function"
     weight = 20
 
   [[menu.main]]
-    name = "exgel"
-    url = "#exgel"
+    name = "안전한 작업"
+    url = "#safework"
     weight = 30
 
   [[menu.main]]
