@@ -30,7 +30,7 @@
 
     <footer class="footer">
       <div class="footer-inner">
-        <span class="muted">&copy; {{ now.Format "2006" }} NextWork Lab. All rights reserved.</span>
+        <span class="copyright">&copy; {{ now.Format "2006" }} NextWork Lab. All rights reserved.</span>
       </div>
     </footer>
   </div>
@@ -42,19 +42,19 @@
         const target = document.querySelector(hash);
         if (!target) return;
 
-        // 타겟 요소가 속한 패널(.panel)을 찾아 활성화
         const targetPanel = target.closest(".panel") || (target.classList.contains("panel") ? target : null);
 
         if (targetPanel) {
+          // 모든 패널 숨김 및 해당 패널 표시
           document.querySelectorAll(".panel").forEach(p => p.style.display = "none");
           targetPanel.style.display = "block";
 
-          // 메뉴 하이라이트 업데이트
+          // 메뉴 활성화 상태 업데이트
           document.querySelectorAll(".side-nav a").forEach(a => {
             a.classList.toggle("is-active", a.getAttribute("href") === "#" + targetPanel.id);
           });
 
-          // 상세 내용으로 스크롤 (타겟이 패널 자체가 아닐 때만)
+          // 그리드 클릭 등으로 상세 요소를 찾은 경우 스크롤
           if (target !== targetPanel) {
             setTimeout(() => {
               target.scrollIntoView({ behavior: "smooth", block: "start" });
