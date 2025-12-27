@@ -4,22 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-  
   <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
-  
-  <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body>
-
   <div class="shell">
     <header class="sidebar">
       <div class="site-name">
         <a href="#about">NextWork Lab<span>.</span></a>
       </div>
       <p class="site-tagline">신체 부담은 줄이고, 더 안전하게 일할 수 있도록</p>
-      
-      <nav class="side-nav" aria-label="Main Navigation">
+      <nav class="side-nav">
         <a href="#about">소개</a>
         <a href="#function">신체기능</a>
         <a href="#safework">안전한 작업</a>
@@ -42,69 +37,36 @@
 
   <script>
     (function() {
-      /**
-       * 해시(Hash) 값에 따라 적절한 패널을 표시하고 스크롤하는 함수
-       */
-      function handleNavigation() {
+      function handleNav() {
         const hash = window.location.hash || "#about";
-        const targetElement = document.querySelector(hash);
-        
-        if (!targetElement) return;
+        const target = document.querySelector(hash);
+        if (!target) return;
 
-        // 1. 타겟 요소가 속한 최상위 패널(.panel) 찾기
-        const targetPanel = targetElement.closest(".panel");
+        // 타겟 요소가 속한 패널(.panel)을 찾아 활성화
+        const targetPanel = target.closest(".panel") || (target.classList.contains("panel") ? target : null);
 
         if (targetPanel) {
-          // 모든 패널 숨기기
-          document.querySelectorAll(".panel").forEach(panel => {
-            panel.classList.remove("is-default");
-            panel.style.display = "none";
-          });
-
-          // 해당 패널 표시하기
-          targetPanel.classList.add("is-default");
+          document.querySelectorAll(".panel").forEach(p => p.style.display = "none");
           targetPanel.style.display = "block";
 
-          // 2. 만약 타겟이 패널 자체가 아니라 내부 요소(상세 내용 등)라면 스크롤 이동
-          if (targetElement !== targetPanel) {
-            // 패널이 렌더링될 시간을 잠시 준 뒤 스크롤
+          // 메뉴 하이라이트 업데이트
+          document.querySelectorAll(".side-nav a").forEach(a => {
+            a.classList.toggle("is-active", a.getAttribute("href") === "#" + targetPanel.id);
+          });
+
+          // 상세 내용으로 스크롤 (타겟이 패널 자체가 아닐 때만)
+          if (target !== targetPanel) {
             setTimeout(() => {
-              targetElement.scrollIntoView({ 
-                behavior: "smooth", 
-                block: "start" 
-              });
+              target.scrollIntoView({ behavior: "smooth", block: "start" });
             }, 50);
           } else {
-            // 패널 자체로 이동한 경우 맨 위로 스크롤
             window.scrollTo({ top: 0, behavior: "smooth" });
           }
-
-          // 3. 네비게이션 메뉴 활성화 상태 업데이트
-          updateActiveMenu("#" + targetPanel.id);
         }
       }
-
-      /**
-       * 현재 활성화된 패널에 맞춰 메뉴의 하이라이트(is-active)를 변경
-       */
-      function updateActiveMenu(panelHash) {
-        document.querySelectorAll(".side-nav a").forEach(link => {
-          const href = link.getAttribute("href");
-          if (href === panelHash) {
-            link.classList.add("is-active");
-          } else {
-            link.classList.remove("is-active");
-          }
-        });
-      }
-
-      // 해시가 변경될 때마다 실행
-      window.addEventListener("hashchange", handleNavigation);
-      
-      // 페이지 로드 시 실행
-      document.addEventListener("DOMContentLoaded", handleNavigation);
+      window.addEventListener("hashchange", handleNav);
+      document.addEventListener("DOMContentLoaded", handleNav);
     })();
   </script>
-
 </body>
 </html>
