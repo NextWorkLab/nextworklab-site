@@ -177,3 +177,22 @@ body {
   .headline { font-size: 32px; }
   .footer-inner { justify-content: center; } /* 모바일은 중앙 정렬 */
 }
+/* 제품 상세 섹션(product) 내의 타이포그래피 간격 조정 */
+.product h3 {
+  margin-top: 64px;    /* 이전 문단과의 거리를 넓혀서 새로운 주제임을 알림 */
+  margin-bottom: 12px; /* 제목과 바로 아래 설명 사이를 가깝게 붙여 한 그룹으로 만듦 */
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.product p {
+  margin-top: 0;
+  margin-bottom: 24px; /* 문단과 문단 사이의 적절한 간격 */
+}
+
+/* 섹션 설명(section-desc) 바로 다음에 나오는 첫 번째 h3는 여백을 살짝 조정 */
+.product .section-desc + h3 {
+  margin-top: 48px;
+}
