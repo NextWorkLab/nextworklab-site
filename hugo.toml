@@ -22,6 +22,6 @@ title = "NextWork Lab."
     weight = 30
 
   [[menu.main]]
-    name = "Contact"
+    name = "문의"
     url = "#contact"
     weight = 40
