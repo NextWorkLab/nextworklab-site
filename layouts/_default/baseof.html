@@ -17,6 +17,7 @@
         <a href="#about">NextWork Lab<span>.</span></a>
       </div>
       <p class="site-tagline">신체 부담은 줄이고, 더 안전하게 일할 수 있도록</p>
+      
       <nav class="side-nav">
         <a href="#about">소개</a>
         <a href="#function">신체기능</a>
@@ -54,6 +55,7 @@
           a.classList.toggle("is-active", a.getAttribute("href") === hash);
         });
 
+        // 페이지 상단으로 부드럽게 이동
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
       window.addEventListener("hashchange", showPanel);
