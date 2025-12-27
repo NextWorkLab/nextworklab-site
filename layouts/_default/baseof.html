@@ -37,35 +37,24 @@
 
   <script>
     (function() {
-      function handleNav() {
+      function showPanel() {
         const hash = window.location.hash || "#about";
         const target = document.querySelector(hash);
         if (!target) return;
 
-        const targetPanel = target.closest(".panel") || (target.classList.contains("panel") ? target : null);
+        // 모든 패널 숨김 및 타겟 패널 활성화
+        document.querySelectorAll(".panel").forEach(p => p.classList.remove("is-default"));
+        target.classList.add("is-default");
 
-        if (targetPanel) {
-          // 모든 패널 숨김 및 해당 패널 표시
-          document.querySelectorAll(".panel").forEach(p => p.style.display = "none");
-          targetPanel.style.display = "block";
+        // 메뉴 활성화 상태 업데이트
+        document.querySelectorAll(".side-nav a").forEach(a => {
+          a.classList.toggle("is-active", a.getAttribute("href") === hash);
+        });
 
-          // 메뉴 활성화 상태 업데이트
-          document.querySelectorAll(".side-nav a").forEach(a => {
-            a.classList.toggle("is-active", a.getAttribute("href") === "#" + targetPanel.id);
-          });
-
-          // 그리드 클릭 등으로 상세 요소를 찾은 경우 스크롤
-          if (target !== targetPanel) {
-            setTimeout(() => {
-              target.scrollIntoView({ behavior: "smooth", block: "start" });
-            }, 50);
-          } else {
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }
-        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
       }
-      window.addEventListener("hashchange", handleNav);
-      document.addEventListener("DOMContentLoaded", handleNav);
+      window.addEventListener("hashchange", showPanel);
+      document.addEventListener("DOMContentLoaded", showPanel);
     })();
   </script>
 </body>
