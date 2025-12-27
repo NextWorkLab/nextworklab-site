@@ -43,7 +43,6 @@ body {
 .subhead { font-size: 20px; line-height: 1.6; color: var(--text); margin-bottom: 24px; }
 .section-desc { font-size: 18px; line-height: 1.7; color: #334155; margin-bottom: 32px; border-left: 3px solid var(--accent-teal); padding-left: 20px; }
 h3 { margin-top: 64px; margin-bottom: 16px; font-size: 22px; font-weight: 700; color: var(--accent-teal); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-.detail-text { margin-bottom: 24px; color: #475569; }
 
 /* Product Images */
 .product-image { margin: 48px 0; text-align: center; }
@@ -68,9 +67,7 @@ h3 { margin-top: 64px; margin-bottom: 16px; font-size: 22px; font-weight: 700; c
 .card-label { font-size: 13px; font-weight: 800; color: var(--accent-coral); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 .card-value { font-size: 19px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
 .card-value a { text-decoration: none; color: inherit; }
-.card-note { font-size: 14px; color: var(--muted); margin: 0; line-height: 1.5; }
 
-/* Footer */
 .footer { border-top: 1px solid var(--border); padding: 60px 20px; text-align: left; }
 .copyright { font-size: 14px; color: var(--muted); }
 
