@@ -30,11 +30,10 @@
 </p>
       </div>
 
-  <nav class="side-nav" aria-label="Primary">
-  <a href="#about">소개</a>
-  <a href="#function">신체기능</a>
-  <a href="#safework">안전한 작업</a>
-  <a href="#contact">문의</a>
+<nav class="side-nav" aria-label="Primary">
+  {{ range site.Menus.main }}
+    <a href="{{ .URL | relURL }}">{{ .Name }}</a>
+  {{ end }}
 </nav>
     </div>
   </aside>
