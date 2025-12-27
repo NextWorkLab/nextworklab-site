@@ -24,7 +24,6 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  /* Inter 또는 시스템 폰트 사용 */
   font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   line-height: 1.8;
   letter-spacing: -0.01em;
@@ -39,7 +38,7 @@ body {
   min-height: 100vh;
 }
 
-/* 헤더 영역 (기존 Sidebar 클래스 활용) */
+/* 헤더 영역 */
 .sidebar {
   padding: 80px 20px 40px;
   max-width: var(--max-width);
@@ -56,7 +55,6 @@ body {
   font-size: 26px;
   font-weight: 850;
   letter-spacing: -0.05em;
-  /* 로고의 그라데이션을 텍스트에 투영 */
   background: var(--gradient);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -90,7 +88,6 @@ body {
   color: var(--text);
 }
 
-/* 활성화 메뉴 하단 라인 (로고 포인트 컬러 사용) */
 .side-nav a.is-active::after {
   content: "";
   position: absolute;
@@ -146,7 +143,65 @@ body {
   border-left: 2px solid var(--accent-teal);
 }
 
-/* 푸터 영역: 우측 정렬 */
+/* 제품 상세 섹션(product) 내의 가독성 및 행간 조정 */
+.product h3 {
+  margin-top: 64px;    /* 이전 그룹과 멀어지게 설정 */
+  margin-bottom: 12px; /* 아래 설명과 가깝게 그룹화 */
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.product p {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+
+/* 첫 번째 h3 상단 여백 보정 */
+.product .section-desc + h3 {
+  margin-top: 48px;
+}
+
+/* CTA 버튼 그룹 디자인 */
+.cta-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+
+.btn-nextwork {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 52px;
+  padding: 0 32px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-inquiry {
+  background-color: var(--accent-teal);
+  color: #ffffff;
+}
+
+.btn-download {
+  background-color: var(--accent-coral);
+  color: #ffffff;
+}
+
+.btn-nextwork:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* 푸터 영역 */
 .footer {
   border-top: 1px solid var(--border);
   padding: 50px 0;
@@ -157,7 +212,6 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 20px;
-  /* 우측 정렬 설정 */
   display: flex;
   justify-content: flex-end;
 }
@@ -175,74 +229,7 @@ body {
   .sidebar { padding-top: 40px; }
   .side-nav { gap: 18px; overflow-x: auto; white-space: nowrap; }
   .headline { font-size: 32px; }
-  .footer-inner { justify-content: center; } /* 모바일은 중앙 정렬 */
-}
-/* 제품 상세 섹션(product) 내의 타이포그래피 간격 조정 */
-.product h3 {
-  margin-top: 64px;    /* 이전 문단과의 거리를 넓혀서 새로운 주제임을 알림 */
-  margin-bottom: 12px; /* 제목과 바로 아래 설명 사이를 가깝게 붙여 한 그룹으로 만듦 */
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.4;
-}
-
-.product p {
-  margin-top: 0;
-  margin-bottom: 24px; /* 문단과 문단 사이의 적절한 간격 */
-}
-
-/* 섹션 설명(section-desc) 바로 다음에 나오는 첫 번째 h3는 여백을 살짝 조정 */
-.product .section-desc + h3 {
-  margin-top: 48px;
-}
-/* 버튼 그룹 레이아웃 */
-.cta-group {
-  display: flex;
-  gap: 12px;
-  margin-top: 60px;
-  padding-top: 40px;
-  border-top: 1px solid var(--border);
-}
-
-/* 기본 버튼 스타일 */
-.btn-nextwork {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  height: 52px;
-  padding: 0 32px;
-  border-radius: 6px;
-  font-size: 15px;
-  font-weight: 700;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* 문의하기: 청록색(Teal) */
-.btn-inquiry {
-  background-color: var(--accent-teal);
-  color: #ffffff;
-}
-
-/* 카탈로그: 코랄색(Coral) */
-.btn-download {
-  background-color: var(--accent-coral);
-  color: #ffffff;
-}
-
-.btn-nextwork:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* 모바일 대응 */
-@media (max-width: 600px) {
-  .cta-group {
-    flex-direction: column;
-  }
-  .btn-nextwork {
-    width: 100%;
-  }
+  .footer-inner { justify-content: center; }
+  .cta-group { flex-direction: column; } /* 버튼을 세로로 정렬 */
+  .btn-nextwork { width: 100%; } /* 버튼 너비 전체 차지 */
 }
