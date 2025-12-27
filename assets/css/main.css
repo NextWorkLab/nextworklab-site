@@ -40,14 +40,14 @@ body {
 
 /* 헤더 영역 */
 .sidebar {
-  padding: 80px 20px 32px;
+  padding: 60px 20px 24px;
   max-width: var(--max-width);
   margin: 0 auto;
   width: 100%;
 }
 
 .site-name {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .site-name a {
@@ -72,7 +72,7 @@ body {
   display: flex;
   gap: 28px;
   border-bottom: 1px solid var(--border);
-  padding-bottom: 16px;
+  padding-bottom: 12px;
 }
 
 .side-nav a {
