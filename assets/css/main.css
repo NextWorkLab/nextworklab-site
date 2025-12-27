@@ -233,3 +233,71 @@ body {
   .cta-group { flex-direction: column; } /* 버튼을 세로로 정렬 */
   .btn-nextwork { width: 100%; } /* 버튼 너비 전체 차지 */
 }
+
+/* Contact Section Professional Styles */
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* 화면 크기에 맞춰 카드 자동 배치 */
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.contact-card {
+  background: #fcfcfc;
+  padding: 32px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-card:hover {
+  border-color: var(--accent-teal);
+  box-shadow: 0 10px 30px rgba(18, 79, 94, 0.05);
+  transform: translateY(-4px);
+}
+
+.card-label {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-coral); /* 포인트 컬러 사용 */
+  margin-bottom: 12px;
+}
+
+.card-value {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--text);
+  word-break: break-all;
+}
+
+.card-value a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.2s;
+}
+
+.card-value a:hover {
+  color: var(--accent-teal);
+}
+
+.card-note {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* 모바일 대응: 카드가 꽉 차게 */
+@media (max-width: 600px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .contact-card {
+    padding: 24px;
+  }
+}
