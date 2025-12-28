@@ -1,8 +1,8 @@
 :root {
-  /* 사용자 지정 브랜드 컬러 시스템 */
+  /* BI 로고 컬러 시스템 */
   --accent-teal: #124F5E;  /* 심볼의 짙은 청록색 */
   --accent-coral: #F15A5A; /* 심볼의 밝은 코랄색 */
-  --gradient: linear-gradient(135deg, var(--accent-teal), var(--accent-coral));
+  --text-dark: #374151;   /* 'Work' 텍스트용 진회색 */
   
   --bg: #ffffff;
   --text: #0f172a;
@@ -24,22 +24,22 @@ body {
 
 .shell { display: flex; flex-direction: column; min-height: 100vh; }
 
-/* 3색 텍스트 BI 스타일 (Next / Work / Lab.) */
+/* 3색 텍스트 BI 스타일 복구 */
 .sidebar { padding: 60px 20px 24px; max-width: var(--max-width); margin: 0 auto; width: 100%; }
 .site-name { margin-bottom: 8px; }
 .site-name a { font-size: 32px; font-weight: 850; text-decoration: none; letter-spacing: -0.05em; }
 .site-name .next { color: var(--accent-teal); }
-.site-name .work { color: #334155; } /* 진회색 */
+.site-name .work { color: var(--text-dark); }
 .site-name .lab { color: var(--accent-coral); }
 .site-tagline { font-size: 16px; color: var(--muted); margin-bottom: 40px; font-weight: 500; }
 
 /* Navigation */
 .side-nav { display: flex; gap: 28px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
-.side-nav a { text-decoration: none; font-size: 15px; font-weight: 600; color: var(--muted); position: relative; }
+.side-nav a { text-decoration: none; font-size: 15px; font-weight: 600; color: var(--muted); position: relative; transition: color 0.2s; }
 .side-nav a.is-active { color: var(--text); }
 .side-nav a.is-active::after { content: ""; position: absolute; bottom: -13px; left: 0; width: 100%; height: 2px; background: var(--accent-coral); }
 
-/* Main Layout */
+/* Main Content area */
 .main { flex: 1; }
 .main-inner { max-width: var(--max-width); margin: 0 auto; padding: 60px 20px 120px; }
 .panel { display: none; }
@@ -48,7 +48,6 @@ body {
 
 /* Typography */
 .headline { font-size: clamp(40px, 6vw, 68px); font-weight: 850; letter-spacing: -0.05em; line-height: 1.05; margin-bottom: 40px; }
-.headline .coral { color: var(--accent-coral); }
 .subhead { font-size: 20px; line-height: 1.6; color: var(--text); margin-bottom: 24px; font-weight: 500; }
 .section-desc { font-size: 18px; line-height: 1.7; color: #334155; margin-bottom: 32px; border-left: 4px solid var(--accent-teal); padding-left: 20px; }
 h3 { margin-top: 64px; margin-bottom: 16px; font-size: 24px; font-weight: 800; color: var(--accent-teal); border-bottom: 1px solid var(--border); padding-bottom: 10px; }
@@ -75,7 +74,12 @@ h3 { margin-top: 64px; margin-bottom: 16px; font-size: 24px; font-weight: 800; c
 .card-label { font-size: 13px; font-weight: 800; color: var(--accent-coral); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
 .card-value { font-size: 19px; font-weight: 700; }
 
-/* Footer */
+/* Footer 복구 */
 .footer { border-top: 1px solid var(--border); padding: 60px 20px; background: #fff; }
 .footer-inner { max-width: var(--max-width); margin: 0 auto; }
 .copyright { font-size: 14px; color: var(--muted); margin: 0; }
+
+@media (max-width: 600px) {
+  .cta-group { flex-direction: column; }
+  .btn-nextwork { width: 100%; }
+}
