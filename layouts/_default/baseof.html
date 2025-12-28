@@ -48,9 +48,11 @@
         const target = document.querySelector(hash);
         if (!target) return;
 
+        // 모든 패널 숨김 및 타겟 패널 활성화
         document.querySelectorAll(".panel").forEach(p => p.classList.remove("is-default"));
         target.classList.add("is-default");
 
+        // 메뉴 활성화 상태 업데이트
         document.querySelectorAll(".side-nav a").forEach(a => {
           a.classList.toggle("is-active", a.getAttribute("href") === hash);
         });
