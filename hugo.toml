@@ -1,6 +1,5 @@
 baseURL = "https://nextworklab.github.io/nextworklab-site/"
-relativeURLs = true
-canonifyURLs = true
+
 
 languageCode = "en-us"
 title = "NextWork Lab."
