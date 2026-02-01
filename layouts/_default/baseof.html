@@ -91,6 +91,8 @@
 
   <script>
     (function () {
+      const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwAodR5cJlgIo2ZlfOokDiX3AyeQmk2Sh36ZBN1AZCNAIkGw8eQwCKuRLgb0u7tGsbC/exec";
+
       let targetPdf = null;
       let lastTrigger = null;
 
@@ -130,7 +132,7 @@
         lastTrigger = null;
       }
 
-      function submitGate() {
+      async function submitGate() {
         const nameEl = document.getElementById("cgName");
         const orgEl = document.getElementById("cgOrg");
         const phoneEl = document.getElementById("cgPhone");
@@ -146,10 +148,54 @@
           return;
         }
 
-        const pdf = targetPdf;
-        closeGate();
+        const payload = {
+          name,
+          org,
+          phone,
+          pdf: targetPdf || "",
+          referrer: document.referrer || "",
+          userAgent: navigator.userAgent || ""
+        };
 
-        if (pdf) window.open(pdf, "_blank", "noopener");
+        const submitBtn = document.getElementById("catalogGateSubmit");
+        const prevBtnText = submitBtn ? submitBtn.textContent : "";
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "저장 중...";
+        }
+
+        try {
+          const res = await fetch(WEB_APP_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          let ok = false;
+          try {
+            const data = await res.json();
+            ok = !!(data && data.ok);
+          } catch (e) {
+            // JSON 파싱이 실패해도 요청이 서버에 도달했을 가능성이 있어 보수적으로 처리
+            ok = res.status >= 200 && res.status < 400;
+          }
+
+          if (!ok) {
+            alert("저장 중 문제가 발생했습니다. 다시 시도해 주세요.");
+            return;
+          }
+
+          const pdf = targetPdf;
+          closeGate();
+          if (pdf) window.open(pdf, "_blank", "noopener");
+        } catch (e) {
+          alert("네트워크 오류로 저장에 실패했습니다. 다시 시도해 주세요.");
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = prevBtnText || "확인 후 열기";
+          }
+        }
       }
 
       document.addEventListener("click", function (e) {
