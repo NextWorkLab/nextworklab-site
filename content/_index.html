@@ -28,10 +28,11 @@
 
     <div class="cta-group">
       <a href="mailto:info@tuatua.kr?subject=[CBW 제품 문의] 문의드립니다" class="btn-nextwork btn-inquiry">문의하기</a>
-      <a href="#"
+      <a href="https://drive.google.com/file/d/1O2crerevRxQBVMDhCaam6YU0o-Hhhx0T/preview"
          data-pdf="https://drive.google.com/file/d/1O2crerevRxQBVMDhCaam6YU0o-Hhhx0T/preview"
-         onclick="openCatalogGate(event)"
-         class="btn-nextwork btn-download">카탈로그 보기 (PDF)</a>
+         class="btn-nextwork btn-download js-catalog">
+        카탈로그 보기 (PDF)
+      </a>
     </div>
   </div>
 </section>
@@ -66,10 +67,11 @@
 
     <div class="cta-group">
       <a href="mailto:info@tuatua.kr?subject=[I-BOW 제품 문의] 문의드립니다" class="btn-nextwork btn-inquiry">문의하기</a>
-      <a href="#"
+      <a href="https://drive.google.com/file/d/1guSElPx47rHLTqPqHsWyfPbEF8lYGm8a/preview"
          data-pdf="https://drive.google.com/file/d/1guSElPx47rHLTqPqHsWyfPbEF8lYGm8a/preview"
-         onclick="openCatalogGate(event)"
-         class="btn-nextwork btn-download">카탈로그 보기 (PDF)</a>
+         class="btn-nextwork btn-download js-catalog">
+        카탈로그 보기 (PDF)
+      </a>
     </div>
   </div>
 </section>
@@ -112,75 +114,161 @@
     </div>
   </div>
 
-  <!-- Catalog Gate Modal -->
-  <div id="catalog-gate" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
-    <div style="max-width:420px; margin:10vh auto; background:#fff; padding:24px; border-radius:12px;">
-      <h3 style="margin-top:0;">카탈로그 열기</h3>
-      <p style="font-size:14px; color:var(--muted); margin:0 0 14px;">자료 제공을 위해 간단한 정보만 확인합니다.</p>
+  <!-- Catalog Gate Modal (CSS는 별도 추가) -->
+  <div id="catalogGate" class="catalogGate" aria-hidden="true">
+    <div class="catalogGate__dialog" role="dialog" aria-modal="true" aria-labelledby="catalogGateTitle">
+      <div class="catalogGate__header">
+        <h3 id="catalogGateTitle" class="catalogGate__title">카탈로그 열기</h3>
+        <button type="button" class="catalogGate__close" data-gate-close aria-label="닫기">✕</button>
+      </div>
 
-      <input id="cg-name" placeholder="이름" style="width:100%; margin:0 0 10px;">
-      <input id="cg-org" placeholder="소속 / 회사명" style="width:100%; margin:0 0 10px;">
-      <input id="cg-phone" placeholder="연락 가능한 전화번호 (지역번호·해외 번호 가능)" style="width:100%; margin:0 0 14px;">
+      <div class="catalogGate__body">
+        <p class="catalogGate__desc">자료 제공을 위해 간단한 정보만 확인합니다.</p>
 
-      <button type="button" onclick="submitCatalogGate()" style="width:100%;">확인 후 열기</button>
+        <div class="catalogGate__form">
+          <input id="cgName" class="catalogGate__input" placeholder="이름" autocomplete="name">
+          <input id="cgOrg" class="catalogGate__input" placeholder="소속 / 회사명" autocomplete="organization">
+          <input id="cgPhone" class="catalogGate__input" placeholder="연락 가능한 전화번호 (지역번호·해외 번호 가능)" autocomplete="tel">
+        </div>
+
+        <div class="catalogGate__actions">
+          <button type="button" class="catalogGate__btn catalogGate__btn--cancel" data-gate-close>취소</button>
+          <button type="button" class="catalogGate__btn catalogGate__btn--submit" id="catalogGateSubmit">확인 후 열기</button>
+        </div>
+
+        <p class="catalogGate__note">자료 제공 목적 외의 연락은 드리지 않습니다.</p>
+      </div>
     </div>
   </div>
 
   <script>
-    let targetPdf = null;
+    (function () {
+      // ===== Contact info (scrape-resistant) =====
+      document.addEventListener("DOMContentLoaded", function () {
+        const phone = "010-5643-5471";
+        const contactPhoneEl = document.getElementById("contact-phone");
+        if (contactPhoneEl) {
+          contactPhoneEl.textContent = phone;
+          contactPhoneEl.href = "tel:" + phone.replace(/-/g, "");
+        }
 
-    function openCatalogGate(e) {
-      e.preventDefault();
-      targetPdf = (e.currentTarget && e.currentTarget.dataset) ? e.currentTarget.dataset.pdf : null;
-      const gate = document.getElementById("catalog-gate");
-      if (!gate || !targetPdf) return;
-      gate.style.display = "block";
-    }
+        const user = "info";
+        const domain = "tuatua.kr";
+        const contactEmailEl = document.getElementById("contact-email");
+        if (contactEmailEl) {
+          const email = user + "@" + domain;
+          contactEmailEl.textContent = email;
+          contactEmailEl.href = "mailto:" + email;
+        }
+      });
 
-    function submitCatalogGate() {
-      const nameEl = document.getElementById("cg-name");
-      const orgEl = document.getElementById("cg-org");
-      const phoneEl = document.getElementById("cg-phone");
-      const gate = document.getElementById("catalog-gate");
+      // ===== Catalog gate =====
+      let targetPdf = null;
+      let lastTrigger = null;
 
-      const name = nameEl ? nameEl.value.trim() : "";
-      const org = orgEl ? orgEl.value.trim() : "";
-      let phone = phoneEl ? phoneEl.value.trim() : "";
+      const gateEl = document.getElementById("catalogGate");
+      const submitEl = document.getElementById("catalogGateSubmit");
+      const nameEl = document.getElementById("cgName");
+      const orgEl = document.getElementById("cgOrg");
+      const phoneEl = document.getElementById("cgPhone");
 
-      // allow digits and "+" only, do not force 010
-      phone = phone.replace(/[^0-9+]/g, "");
+      function openGate(pdfUrl, triggerEl) {
+        if (!gateEl || !pdfUrl) return;
+        targetPdf = pdfUrl;
+        lastTrigger = triggerEl || null;
 
-      if (!name || !org || phone.length < 8) {
-        alert("이름, 소속, 연락처를 정확히 입력해 주세요.");
-        return;
+        gateEl.classList.add("is-open");
+        gateEl.setAttribute("aria-hidden", "false");
+
+        if (nameEl) nameEl.value = "";
+        if (orgEl) orgEl.value = "";
+        if (phoneEl) phoneEl.value = "";
+
+        setTimeout(function () {
+          if (nameEl) nameEl.focus();
+        }, 0);
       }
 
-      if (gate) gate.style.display = "none";
+      function closeGate() {
+        if (!gateEl) return;
+        gateEl.classList.remove("is-open");
+        gateEl.setAttribute("aria-hidden", "true");
+        targetPdf = null;
 
-      // 여기서 서버 전송을 붙일 수 있습니다.
-      // fetch("/api/catalog-lead", { method:"POST", headers:{ "Content-Type":"application/json" }, body: JSON.stringify({ name, org, phone, pdf: targetPdf }) });
-
-      window.open(targetPdf, "_blank");
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      // Phone
-      const phone = "010-5643-5471";
-      const contactPhoneEl = document.getElementById("contact-phone");
-      if (contactPhoneEl) {
-        contactPhoneEl.textContent = phone;
-        contactPhoneEl.href = "tel:" + phone.replace(/-/g, "");
+        if (lastTrigger && typeof lastTrigger.focus === "function") {
+          lastTrigger.focus();
+        }
+        lastTrigger = null;
       }
 
-      // Email (assembled to reduce scraping)
-      const user = "info";
-      const domain = "tuatua.kr";
-      const contactEmailEl = document.getElementById("contact-email");
-      if (contactEmailEl) {
-        const email = user + "@" + domain;
-        contactEmailEl.textContent = email;
-        contactEmailEl.href = "mailto:" + email;
+      function submitGate() {
+        const name = nameEl ? nameEl.value.trim() : "";
+        const org = orgEl ? orgEl.value.trim() : "";
+        let phone = phoneEl ? phoneEl.value.trim() : "";
+
+        // digits and "+" only, no 010 forcing
+        phone = phone.replace(/[^0-9+]/g, "");
+
+        if (!name || !org || phone.length < 8) {
+          alert("이름, 소속, 연락처를 정확히 입력해 주세요.");
+          return;
+        }
+
+        const pdf = targetPdf;
+        closeGate();
+
+        // 서버 전송은 여기서 연결
+        // fetch("/api/catalog-lead", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify({ name, org, phone, pdf })
+        // });
+
+        if (pdf) window.open(pdf, "_blank", "noopener");
       }
-    });
+
+      // Click: open gate via event delegation
+      document.addEventListener("click", function (e) {
+        const a = e.target && e.target.closest ? e.target.closest("a.js-catalog") : null;
+        if (a) {
+          e.preventDefault();
+          const pdf = a.getAttribute("data-pdf") || a.getAttribute("href");
+          openGate(pdf, a);
+          return;
+        }
+
+        // Close: any element with data-gate-close
+        const close = e.target && e.target.closest ? e.target.closest("[data-gate-close]") : null;
+        if (close) {
+          e.preventDefault();
+          closeGate();
+          return;
+        }
+
+        // Close: click on overlay background (not dialog)
+        if (gateEl && gateEl.classList.contains("is-open") && e.target === gateEl) {
+          closeGate();
+        }
+      });
+
+      // Keyboard: ESC closes
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeGate();
+        if (e.key === "Enter" && gateEl && gateEl.classList.contains("is-open")) {
+          const active = document.activeElement;
+          if (active === nameEl || active === orgEl || active === phoneEl) {
+            e.preventDefault();
+            submitGate();
+          }
+        }
+      });
+
+      // Submit button
+      if (submitEl) {
+        submitEl.addEventListener("click", function () {
+          submitGate();
+        });
+      }
+    })();
   </script>
 </section>
