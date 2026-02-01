@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
-  
+
   {{ $style := resources.Get "css/main.css" | minify | fingerprint }}
   <link rel="stylesheet" href="{{ $style.RelPermalink }}">
-  
+
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
 </head>
 <body>
@@ -19,7 +19,7 @@
         </a>
       </div>
       <p class="site-tagline">신체 부담은 줄이고, 더 안전하게 일할 수 있도록</p>
-      
+
       <nav class="side-nav">
         <a href="#about">소개</a>
         <a href="#function">신체기능</a>
@@ -41,6 +41,33 @@
     </footer>
   </div>
 
+  <!-- Catalog Gate Modal: 반드시 panel(.panel) 밖에 있어야 동작 -->
+  <div id="catalogGate" class="catalogGate" aria-hidden="true" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
+    <div class="catalogGate__dialog" role="dialog" aria-modal="true" aria-labelledby="catalogGateTitle"
+         style="width:100%; max-width:520px; margin:10vh auto; background:#fff; border-radius:12px; padding:20px;">
+      <div class="catalogGate__header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+        <h3 id="catalogGateTitle" class="catalogGate__title" style="margin:0;">카탈로그 열기</h3>
+        <button type="button" class="catalogGate__close" data-gate-close aria-label="닫기"
+                style="border:0; background:transparent; cursor:pointer; font-size:18px; line-height:1; padding:6px;">✕</button>
+      </div>
+
+      <p class="catalogGate__desc" style="font-size:14px; color:var(--muted); margin:10px 0 14px;">자료 제공을 위해 간단한 정보만 확인합니다.</p>
+
+      <div class="catalogGate__form" style="display:grid; gap:10px;">
+        <input id="cgName" class="catalogGate__input" placeholder="이름" autocomplete="name" style="width:100%; height:44px; padding:0 12px;">
+        <input id="cgOrg" class="catalogGate__input" placeholder="소속 / 회사명" autocomplete="organization" style="width:100%; height:44px; padding:0 12px;">
+        <input id="cgPhone" class="catalogGate__input" placeholder="연락 가능한 전화번호 (지역번호·해외 번호 가능)" autocomplete="tel" style="width:100%; height:44px; padding:0 12px;">
+      </div>
+
+      <div class="catalogGate__actions" style="display:flex; gap:10px; margin-top:14px;">
+        <button type="button" class="catalogGate__btn catalogGate__btn--cancel" data-gate-close style="flex:1; height:46px;">취소</button>
+        <button type="button" class="catalogGate__btn catalogGate__btn--submit" id="catalogGateSubmit" style="flex:1; height:46px;">확인 후 열기</button>
+      </div>
+
+      <p class="catalogGate__note" style="font-size:12px; color:var(--muted); margin:12px 0 0;">자료 제공 목적 외의 연락은 드리지 않습니다.</p>
+    </div>
+  </div>
+
   <script>
     (function() {
       function showPanel() {
@@ -48,11 +75,9 @@
         const target = document.querySelector(hash);
         if (!target) return;
 
-        // 모든 패널 숨김 및 타겟 패널 활성화
         document.querySelectorAll(".panel").forEach(p => p.classList.remove("is-default"));
         target.classList.add("is-default");
 
-        // 메뉴 활성화 상태 업데이트
         document.querySelectorAll(".side-nav a").forEach(a => {
           a.classList.toggle("is-active", a.getAttribute("href") === hash);
         });
@@ -61,6 +86,139 @@
       }
       window.addEventListener("hashchange", showPanel);
       document.addEventListener("DOMContentLoaded", showPanel);
+    })();
+  </script>
+
+  <script>
+    (function () {
+      let targetPdf = null;
+      let lastTrigger = null;
+
+      function openGate(pdfUrl, triggerEl) {
+        const gateEl = document.getElementById("catalogGate");
+        if (!gateEl || !pdfUrl) return;
+
+        targetPdf = pdfUrl;
+        lastTrigger = triggerEl || null;
+
+        gateEl.style.display = "block";
+        gateEl.setAttribute("aria-hidden", "false");
+
+        const nameEl = document.getElementById("cgName");
+        const orgEl = document.getElementById("cgOrg");
+        const phoneEl = document.getElementById("cgPhone");
+        if (nameEl) nameEl.value = "";
+        if (orgEl) orgEl.value = "";
+        if (phoneEl) phoneEl.value = "";
+
+        setTimeout(function () {
+          if (nameEl) nameEl.focus();
+        }, 0);
+      }
+
+      function closeGate() {
+        const gateEl = document.getElementById("catalogGate");
+        if (!gateEl) return;
+
+        gateEl.style.display = "none";
+        gateEl.setAttribute("aria-hidden", "true");
+        targetPdf = null;
+
+        if (lastTrigger && typeof lastTrigger.focus === "function") {
+          lastTrigger.focus();
+        }
+        lastTrigger = null;
+      }
+
+      function submitGate() {
+        const nameEl = document.getElementById("cgName");
+        const orgEl = document.getElementById("cgOrg");
+        const phoneEl = document.getElementById("cgPhone");
+
+        const name = nameEl ? nameEl.value.trim() : "";
+        const org = orgEl ? orgEl.value.trim() : "";
+        let phone = phoneEl ? phoneEl.value.trim() : "";
+
+        phone = phone.replace(/[^0-9+]/g, "");
+
+        if (!name || !org || phone.length < 8) {
+          alert("이름, 소속, 연락처를 정확히 입력해 주세요.");
+          return;
+        }
+
+        const pdf = targetPdf;
+        closeGate();
+
+        if (pdf) window.open(pdf, "_blank", "noopener");
+      }
+
+      document.addEventListener("click", function (e) {
+        const a = e.target && e.target.closest ? e.target.closest("a.js-catalog") : null;
+        if (a) {
+          e.preventDefault();
+          const pdf = a.getAttribute("data-pdf") || a.getAttribute("href");
+          openGate(pdf, a);
+          return;
+        }
+
+        const closeBtn = e.target && e.target.closest ? e.target.closest("[data-gate-close]") : null;
+        if (closeBtn) {
+          e.preventDefault();
+          closeGate();
+          return;
+        }
+
+        const gateEl = document.getElementById("catalogGate");
+        if (gateEl && gateEl.style.display !== "none" && e.target === gateEl) {
+          closeGate();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        const gateEl = document.getElementById("catalogGate");
+        if (!gateEl || gateEl.style.display === "none") return;
+
+        if (e.key === "Escape") {
+          closeGate();
+          return;
+        }
+
+        if (e.key === "Enter") {
+          const active = document.activeElement;
+          const nameEl = document.getElementById("cgName");
+          const orgEl = document.getElementById("cgOrg");
+          const phoneEl = document.getElementById("cgPhone");
+          if (active === nameEl || active === orgEl || active === phoneEl) {
+            e.preventDefault();
+            submitGate();
+          }
+        }
+      });
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const submitEl = document.getElementById("catalogGateSubmit");
+        if (submitEl) {
+          submitEl.addEventListener("click", function () {
+            submitGate();
+          });
+        }
+
+        const phone = "010-5643-5471";
+        const contactPhoneEl = document.getElementById("contact-phone");
+        if (contactPhoneEl) {
+          contactPhoneEl.textContent = phone;
+          contactPhoneEl.href = "tel:" + phone.replace(/-/g, "");
+        }
+
+        const user = "info";
+        const domain = "tuatua.kr";
+        const contactEmailEl = document.getElementById("contact-email");
+        if (contactEmailEl) {
+          const email = user + "@" + domain;
+          contactEmailEl.textContent = email;
+          contactEmailEl.href = "mailto:" + email;
+        }
+      });
     })();
   </script>
 </body>
