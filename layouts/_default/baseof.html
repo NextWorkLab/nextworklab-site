@@ -44,29 +44,45 @@
   <!-- Catalog Gate Modal: 반드시 panel(.panel) 밖에 있어야 동작 -->
   <div id="catalogGate" class="catalogGate" aria-hidden="true" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:9999;">
     <div class="catalogGate__dialog" role="dialog" aria-modal="true" aria-labelledby="catalogGateTitle"
-         style="width:100%; max-width:520px; margin:10vh auto; background:#fff; border-radius:12px; padding:20px;">
+         style="width:100%; max-width:560px; margin:9vh auto; background:#fff; border-radius:12px; padding:22px;">
       <div class="catalogGate__header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
         <h3 id="catalogGateTitle" class="catalogGate__title" style="margin:0;">카탈로그 열기</h3>
         <button type="button" class="catalogGate__close" data-gate-close aria-label="닫기"
                 style="border:0; background:transparent; cursor:pointer; font-size:18px; line-height:1; padding:6px;">✕</button>
       </div>
 
-      <p class="catalogGate__desc" style="font-size:14px; color:var(--muted); margin:10px 0 14px;">자료 제공을 위해 간단한 정보만 확인합니다.</p>
+      <p class="catalogGate__desc" style="font-size:14px; color:var(--muted); margin:10px 0 16px;">자료 제공을 위해 간단한 정보만 확인합니다.</p>
 
-      <div class="catalogGate__form" style="display:grid; gap:10px;">
-        <input id="cgName" class="catalogGate__input" placeholder="이름" autocomplete="name" style="width:100%; height:44px; padding:0 12px;">
-        <input id="cgOrg" class="catalogGate__input" placeholder="소속 / 회사명" autocomplete="organization" style="width:100%; height:44px; padding:0 12px;">
-        <input id="cgPhone" class="catalogGate__input" placeholder="연락 가능한 전화번호 (지역번호·해외 번호 가능)" autocomplete="tel" style="width:100%; height:44px; padding:0 12px;">
+      <div class="catalogGate__form" style="display:grid; gap:12px;">
+        <input id="cgName" class="catalogGate__input" placeholder="예: 홍길동" autocomplete="name" inputmode="text" style="width:100%; height:54px; padding:0 14px;">
+        <input id="cgOrg" class="catalogGate__input" placeholder="예: 동원식품" autocomplete="organization" inputmode="text" style="width:100%; height:54px; padding:0 14px;">
+
+        <div class="catalogGate__phone" style="display:grid; grid-template-columns: 1.2fr 1fr 1fr; gap:10px;">
+          <input id="cgPhone1" class="catalogGate__input" placeholder="010/02/+82" autocomplete="tel" inputmode="tel" style="width:100%; height:54px; padding:0 14px;">
+          <input id="cgPhone2" class="catalogGate__input" placeholder="5643" inputmode="numeric" style="width:100%; height:54px; padding:0 14px;">
+          <input id="cgPhone3" class="catalogGate__input" placeholder="5471" inputmode="numeric" style="width:100%; height:54px; padding:0 14px;">
+        </div>
       </div>
 
-      <div class="catalogGate__actions" style="display:flex; gap:10px; margin-top:14px;">
-        <button type="button" class="catalogGate__btn catalogGate__btn--cancel" data-gate-close style="flex:1; height:46px;">취소</button>
-        <button type="button" class="catalogGate__btn catalogGate__btn--submit" id="catalogGateSubmit" style="flex:1; height:46px;">확인 후 열기</button>
+      <div class="catalogGate__actions" style="display:flex; gap:12px; margin-top:16px;">
+        <button type="button" class="btn-nextwork" data-gate-close style="flex:1; height:54px;">취소</button>
+        <button type="button" class="btn-nextwork btn-download" id="catalogGateSubmit" style="flex:1; height:54px;">확인 후 열기</button>
       </div>
 
-      <p class="catalogGate__note" style="font-size:12px; color:var(--muted); margin:12px 0 0;">자료 제공 목적 외의 연락은 드리지 않습니다.</p>
+      <p class="catalogGate__note" style="font-size:12px; color:var(--muted); margin:14px 0 0;">자료 제공 목적 외의 연락은 드리지 않습니다.</p>
     </div>
   </div>
+
+  <!-- CORS 회피용: form + hidden iframe (저장 성공/실패 판정 없이 백그라운드 전송) -->
+  <iframe name="catalogGateSink" title="catalog gate sink" style="display:none;"></iframe>
+  <form id="catalogGateForm" method="POST" target="catalogGateSink" style="display:none;">
+    <input name="name" />
+    <input name="org" />
+    <input name="phone" />
+    <input name="pdf" />
+    <input name="referrer" />
+    <input name="userAgent" />
+  </form>
 
   <script>
     (function() {
@@ -108,10 +124,14 @@
 
         const nameEl = document.getElementById("cgName");
         const orgEl = document.getElementById("cgOrg");
-        const phoneEl = document.getElementById("cgPhone");
+        const phone1El = document.getElementById("cgPhone1");
+        const phone2El = document.getElementById("cgPhone2");
+        const phone3El = document.getElementById("cgPhone3");
         if (nameEl) nameEl.value = "";
         if (orgEl) orgEl.value = "";
-        if (phoneEl) phoneEl.value = "";
+        if (phone1El) phone1El.value = "";
+        if (phone2El) phone2El.value = "";
+        if (phone3El) phone3El.value = "";
 
         setTimeout(function () {
           if (nameEl) nameEl.focus();
@@ -132,70 +152,45 @@
         lastTrigger = null;
       }
 
-      async function submitGate() {
+      function submitGate() {
         const nameEl = document.getElementById("cgName");
         const orgEl = document.getElementById("cgOrg");
-        const phoneEl = document.getElementById("cgPhone");
+        const p1El = document.getElementById("cgPhone1");
+        const p2El = document.getElementById("cgPhone2");
+        const p3El = document.getElementById("cgPhone3");
 
         const name = nameEl ? nameEl.value.trim() : "";
         const org = orgEl ? orgEl.value.trim() : "";
-        let phone = phoneEl ? phoneEl.value.trim() : "";
+        const p1 = p1El ? p1El.value.trim() : "";
+        const p2 = p2El ? p2El.value.trim() : "";
+        const p3 = p3El ? p3El.value.trim() : "";
 
-        phone = phone.replace(/[^0-9+]/g, "");
-
-        if (!name || !org || phone.length < 8) {
-          alert("이름, 소속, 연락처를 정확히 입력해 주세요.");
+        // 입력 검증은 최소화: 값의 '진위' 검증은 하지 않고, 비어있지만 않도록만 처리
+        if (!name || !org || (!p1 && !p2 && !p3)) {
+          alert("이름, 소속, 연락처를 입력해 주세요.");
           return;
         }
 
-        const payload = {
-          name,
-          org,
-          phone,
-          pdf: targetPdf || "",
-          referrer: document.referrer || "",
-          userAgent: navigator.userAgent || ""
-        };
+        // 전화번호는 3칸을 합쳐 저장 (지역번호/해외 번호 포함 허용)
+        let phone = [p1, p2, p3].filter(Boolean).join("-");
+        phone = phone.replace(/[^0-9+\-]/g, "");
 
-        const submitBtn = document.getElementById("catalogGateSubmit");
-        const prevBtnText = submitBtn ? submitBtn.textContent : "";
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.textContent = "저장 중...";
+        // CORS 이슈 회피: hidden form + iframe 으로 백그라운드 전송
+        const form = document.getElementById("catalogGateForm");
+        if (form) {
+          form.action = WEB_APP_URL;
+          form.querySelector('input[name="name"]').value = name;
+          form.querySelector('input[name="org"]').value = org;
+          form.querySelector('input[name="phone"]').value = phone;
+          form.querySelector('input[name="pdf"]').value = targetPdf || "";
+          form.querySelector('input[name="referrer"]').value = document.referrer || "";
+          form.querySelector('input[name="userAgent"]').value = navigator.userAgent || "";
+          try { form.submit(); } catch (e) {}
         }
 
-        try {
-          const res = await fetch(WEB_APP_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-          });
-
-          let ok = false;
-          try {
-            const data = await res.json();
-            ok = !!(data && data.ok);
-          } catch (e) {
-            // JSON 파싱이 실패해도 요청이 서버에 도달했을 가능성이 있어 보수적으로 처리
-            ok = res.status >= 200 && res.status < 400;
-          }
-
-          if (!ok) {
-            alert("저장 중 문제가 발생했습니다. 다시 시도해 주세요.");
-            return;
-          }
-
-          const pdf = targetPdf;
-          closeGate();
-          if (pdf) window.open(pdf, "_blank", "noopener");
-        } catch (e) {
-          alert("네트워크 오류로 저장에 실패했습니다. 다시 시도해 주세요.");
-        } finally {
-          if (submitBtn) {
-            submitBtn.disabled = false;
-            submitBtn.textContent = prevBtnText || "확인 후 열기";
-          }
-        }
+        const pdf = targetPdf;
+        closeGate();
+        if (pdf) window.open(pdf, "_blank", "noopener");
       }
 
       document.addEventListener("click", function (e) {
@@ -233,8 +228,10 @@
           const active = document.activeElement;
           const nameEl = document.getElementById("cgName");
           const orgEl = document.getElementById("cgOrg");
-          const phoneEl = document.getElementById("cgPhone");
-          if (active === nameEl || active === orgEl || active === phoneEl) {
+          const p1El = document.getElementById("cgPhone1");
+          const p2El = document.getElementById("cgPhone2");
+          const p3El = document.getElementById("cgPhone3");
+          if (active === nameEl || active === orgEl || active === p1El || active === p2El || active === p3El) {
             e.preventDefault();
             submitGate();
           }
